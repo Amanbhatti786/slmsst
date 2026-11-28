@@ -40,10 +40,14 @@ export default function AdminLoginPage() {
 
     if (adminErr || !adminRecord || !adminRecord.is_active) {
       await supabase.auth.signOut();
-      setErrorMsg("Access Denied: Your account is not authorized as an active school administrator.");
+      setErrorMsg(
+        adminErr?.message ||
+          `Access Denied (Record: ${JSON.stringify(adminRecord)})`
+      );
       setLoading(false);
       return;
     }
+    
 
     router.push("/admin");
     router.refresh();
